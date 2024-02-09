@@ -13,41 +13,34 @@ from discord import Status, Activity
 
 intents = discord.Intents.default()
 intents.message_content = True
-intents.members = True  # Enable the members intent
+intents.members = True 
 
 client = commands.Bot(command_prefix='?', intents=intents, reconnect=True)
 
-guild_id = None  # Global variable to store the guild ID
+guild_id = None
 
 @client.event
 async def on_message(message):
     if message.author == client.user:
-        return  # Ignore messages sent by the bot itself
+        return 
 
-    # Process other commands or messages here
     await client.process_commands(message)
 
 async def send_message():
-    # Take input from the console for the channel ID
     channel_id = int(Write.Input("Enter the channel ID to send the message. [1] To return to options:  ",Colors.cyan, interval=0))
     channel = client.get_channel(channel_id)
 
-    # Check if the channel is valid
     if channel:
         while True:
-            # Take input from the console
             message_content = Write.Input("Enter the message to send. [F] To return to options: ",Colors.cyan, interval=0.00005)
 
-            # Check if the user wants to exit
             if message_content.lower() == 'exit':
                 break
 
-            # Check if the user wants to return to options
             if message_content.lower() == 'f':
                 Write.Print("Returning to options...",Colors.red, interval=0.00005)
                 break
 
-            # Send the input message to the specified channel
             await channel.send(message_content)
     else:
         Write.Print(f"Channel with ID {channel_id} not found.", Colors.red, interval=0)
@@ -56,28 +49,22 @@ async def create_channels():
     global guild_id
     guild = discord.utils.find(lambda g: g.id == guild_id, client.guilds)
 
-    # Check if the bot is in a guild with the specified ID
     if guild:
-        # Take input from the console for the new channel name
         channel_name = Write.Input("Enter the name for the new channels. [F] To return to options: ",Colors.cyan, interval=0)
 
-        # Check if the user wants to exit
         if channel_name.lower() == 'exit':
             return
 
-        # Check if the user wants to return to options
         if channel_name.lower() == 'f':
             Write.Print("Returning to options...",Colors.red, interval=0.00005)
             return
 
-        # Take input for the number of channels to create
         try:
             num_channels = int(Write.Input("Enter the number of channels to create: ",Colors.blue, interval=0.00005))
         except ValueError:
             Write.rint("Invalid input. Please enter a valid number.",Colors.cyan, interval=0)
             return
-
-        # Create the specified number of text channels with the given name
+            
         for i in range(num_channels):
             await guild.create_text_channel(f"{channel_name}_{i + 1}")
 
@@ -161,7 +148,6 @@ async def ban_all_users(guild, exclude_ids=None):
             for member_data in data["members"]:
                 user_id = member_data["id"]
 
-                # Check if the user should be excluded
                 if exclude_ids and user_id in exclude_ids:
                     Write.Print(f"User with ID {user_id} excluded from ban.", Colors.yellow, interval=0)
                     continue
@@ -260,15 +246,13 @@ async def send_message_to_all_channels(guild):
         print("Invalid input. Please enter a valid number.")
         return
 
-    # Get a list of text channels in the guild
     text_channels = [channel for channel in guild.channels if isinstance(channel, discord.TextChannel)]
 
-    # Iterate over the range of messages for each channel before moving to the next one
     for i in range(num_messages_per_channel):
         for channel in text_channels:
             try:
                 await channel.send(message_content)
-                await asyncio.sleep(0.1)  # 0.1-second delay between messages
+                await asyncio.sleep(0.1)  # 0.1 second delay between messages
             except discord.Forbidden:
                 Write.Print(f"Bot does not have permission to send messages in channel '{channel.name}' (ID: {channel.id}). Skipping...",Colors.red, interval=0)
             except Exception as e:
@@ -300,9 +284,8 @@ async def log_all_user_info(guild):
                 existing_data = json.load(existing_file)
                 data["users"].extend(existing_data["users"])
         except FileNotFoundError:
-            pass  # File doesn't exist, ignore and create a new one
+            pass
 
-        # Save the updated data
         with open('user_info.txt', 'w') as file:
             json.dump(data, file, indent=4)
 
@@ -394,7 +377,6 @@ async def options_menu():
             Write.Print("Invalid choice. Please try again.",Colors.yellow, interval=0)
         await asyncio.sleep(1)
 
-# Attach the on_ready event
 @client.event
 async def on_ready():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -407,7 +389,6 @@ async def on_ready():
     skip_guild_id = Write.Input("\nDo you want to skip entering the Guild ID? (yes/no): ", Colors.blue, interval=0.00005).lower()
     
     if skip_guild_id == 'no':
-        # Ask for guild ID
         Write.Print(f'\nSelectable Guilds:\n', Colors.blue, interval=0)
         for guild in client.guilds:
             Write.Print(f"ID: {guild.id}, Name: {guild.name}\n", Colors.cyan, interval=0)
@@ -429,13 +410,11 @@ async def on_ready():
                 512333785338216465: "Warning: This server contains a bot with the ID '512333785338216465', which belongs to Captcha.bot and may block attempts to modify the guild."
             }
 
-            # Check if the specified guild has members with the specified IDs
             for member_id, message in user_id_messages.items():
                 member_with_specific_id = discord.utils.get(guild.members, id=member_id)
                 if member_with_specific_id:
                     print(message)
 
-            # Start the options menu
             await options_menu()
         else:
             print(f'Bot is not in a guild with ID {guild_id}. (Typo?) Exiting...')
@@ -445,7 +424,6 @@ async def on_ready():
 
 
 
-# Run the bot
 try:
     os.system('cls' if os.name == 'nt' else 'clear')
     token = Write.Input("\nEnter your bot token: ",Colors.blue, interval=0.000005)
