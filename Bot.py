@@ -70,7 +70,7 @@ async def create_channels():
 
         Write.Print(f"{num_channels} channels with the name '{channel_name}' created successfully!",Colors.cyan, interval=0)
     else:
-        Write.Pint(f"Bot is not in a guild with ID {guild_id}. (Did you forget to select one?)",Colors.red, interval=0)
+        Write.Print(f"Bot is not in a guild with ID {guild_id}. (Did you forget to select one?)",Colors.red, interval=0)
 
 
 async def kick_user_by_id(guild, user_id):
