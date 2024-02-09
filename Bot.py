@@ -426,8 +426,7 @@ async def on_ready():
             user_id_messages = {
                 651095740390834176: "Warning: This server contains a bot with the ID '651095740390834176', which belongs to Securitybot.gg and WILL block ALOT of attempts to modify the guild.",
                 957481307405975552: "Warning: This server contains a bot with the ID '957481307405975552', which belongs to Good Knight and may block attempts to modify the guild.",
-                512333785338216465: "Warning: This server contains a bot with the ID '512333785338216465', which belongs to Captcha.bot and may block attempts to modify the guild.",
-                328716742648004611: "Warning: This server contains a user with the ID '328716742648004611', which belongs to SpiderOfWholeMilk, dont forget to whitelist him."
+                512333785338216465: "Warning: This server contains a bot with the ID '512333785338216465', which belongs to Captcha.bot and may block attempts to modify the guild."
             }
 
             # Check if the specified guild has members with the specified IDs
