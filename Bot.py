@@ -62,7 +62,7 @@ async def create_channels():
         try:
             num_channels = int(Write.Input("Enter the number of channels to create: ",Colors.blue, interval=0.00005))
         except ValueError:
-            Write.rint("Invalid input. Please enter a valid number.",Colors.cyan, interval=0)
+            Write.Print("Invalid input. Please enter a valid number.",Colors.cyan, interval=0)
             return
             
         for i in range(num_channels):
